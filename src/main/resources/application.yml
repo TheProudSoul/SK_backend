@@ -1,0 +1,25 @@
+mybatis:
+  mapper-locations: classpath:cn/theproudsoul/justwriteitservice/dao/*.xml
+  type-aliases-package: cn.theproudsoul.justwriteitservice.model
+  configuration.map-underscore-to-camel-case: true
+
+spring:
+  datasource:
+    name: mysql
+    url: jdbc:mysql://localhost:3306/justwriteit?characterEncoding=utf-8&serverTimezone=UTC
+    username: justwriteit
+    password: justwriteit
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: ali.theproudsoul.cn
+    port: 6379
+server:
+  port: 80
+
+storage:
+  fileLocation: src/main/resources/files/
+  imageLocation: src/main/resources/images/
+
+logging:
+  level:
+    sql: DEBUG
