@@ -33,7 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long login(UserLoginVo user) {
-        return 1;
+        UserModel userModel = userRepository.findByUsername(user.getUsername());
+        if (userModel.getPassword().equals(user.getPassword())){
+            return userModel.getId();
+        } else return -1;
     }
 
     private boolean emailExists(final String email) {

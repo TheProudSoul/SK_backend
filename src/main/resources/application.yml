@@ -18,6 +18,7 @@ server:
 
 storage:
   fileLocation: src/main/resources/files/
+  versionControlLocation: src/main/resources/VC/
   imageLocation: src/main/resources/images/
 
 logging:

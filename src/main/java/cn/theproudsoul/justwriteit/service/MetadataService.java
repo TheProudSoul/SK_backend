@@ -11,4 +11,5 @@ public interface MetadataService {
     List<FileJournalVo> getLatestList(long userId, long journalId);
 
     long commit(long userId, long journalId, String path);
+    long commitDelete(long userId, long journalId, String path);
 }

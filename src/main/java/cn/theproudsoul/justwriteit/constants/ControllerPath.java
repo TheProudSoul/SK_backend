@@ -5,4 +5,8 @@ package cn.theproudsoul.justwriteit.constants;
  */
 public interface ControllerPath {
     String IMAGE = "/image";
+    String VC = "/version";
+    String FILE = "/file";
+    String API = "/api";
+    String ACCOUNT = "/account";
 }

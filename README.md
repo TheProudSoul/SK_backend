@@ -16,20 +16,21 @@
 5. 用户注册登录的几个页面
 6. 获取本地文件构建目录结构（进行中）
 
-客户端上传图片界面（未进行美化）
+- 客户端上传图片界面（未进行美化）
 
 ![image-20200403165109210](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgof2bvpij21150p0q3w.jpg)
 
-客户端获取上传历史界面（未进行美化）
+- 客户端获取上传历史界面（未进行美化）
 
 ![image.png](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgoh5knp1j211a0r0ab8.jpg)
 
-注册页面
+- 注册页面
 
 ![image.png](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgojuv8zxj21h90rs76e.jpg)
 
-登录页面
+- 登录页面
 
-![image.png](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgokg1oq3j21hb0rr40c.jpg)
+![image-20200403165109210](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgof2bvpij21150p0q3w.jpg)
 
-![image-20200403165134195.png](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgp4fpa56j21ha0rojsb.jpg)
+![image.png](http://ww1.sinaimg.cn/large/7b19d4ddgy1gdgoh5knp1j211a0r0ab8.jpg)
+

@@ -62,6 +62,17 @@ public class NotificationController {
     }
 
     /**
+     * @param vo 用户 ID, journalID, path
+     * @return
+     */
+    @PostMapping(value = "/commit-delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WebResult commitDelete(@RequestBody FileJournalVo vo) {
+        long journalId = metadataService.commitDelete(vo.getUserId(), vo.getJournalId(), vo.getPath());
+        sendMessage(vo.getUserId());
+        return WebResult.success(journalId);
+    }
+
+    /**
      * 为长查询返回数据
      *
      * @param user 用户 Id

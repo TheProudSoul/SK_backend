@@ -53,3 +53,15 @@ CREATE TABLE `file_object`
     INDEX idx_user_id (`user_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='文件日志表';
+
+CREATE TABLE `version_control`
+(
+    `id`          bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
+    `user_id`     bigint unsigned NOT NULL DEFAULT '0' COMMENT '用户 ID',
+    `name`        varchar(255)    NOT NULL DEFAULT '0' COMMENT '版本名',
+    `create_time` datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY pk_id (`id`),
+    INDEX idx_user_id (`user_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='版本控制表';

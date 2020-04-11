@@ -5,6 +5,7 @@ import cn.theproudsoul.justwriteit.web.result.ERRORDetail;
 import cn.theproudsoul.justwriteit.web.result.Pagination;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.service.ImageStorageService;
+import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,8 +32,18 @@ public class ImageController {
      * @return 按分页返回用户上传图片
      */
     @GetMapping("/{user}")
-    public List<String> listHistory(Pagination pagination, @PathVariable long user) {
+    public List<ImageHistoryVo> listHistory(Pagination pagination, @PathVariable long user) {
         return imageStorageService.listAll(user);
+    }
+
+    /**
+     * 获取用户上传图片总数
+     * @param user 用户 ID
+     * @return 按分页返回用户上传图片
+     */
+    @GetMapping("/{user}/total")
+    public int getCount(@PathVariable long user) {
+        return imageStorageService.getCount(user);
     }
 
     /**
@@ -44,8 +55,7 @@ public class ImageController {
     @PostMapping("/{user}")
     public WebResult handleImageUpload(@RequestParam("file") MultipartFile file, @PathVariable long user) {
         // TODO 验证用户
-        imageStorageService.store(file, user);
-        return WebResult.success();
+        return WebResult.success(imageStorageService.store(file, user));
     }
 
     /**

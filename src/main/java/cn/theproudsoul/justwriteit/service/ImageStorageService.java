@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.service;
 
+import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
@@ -13,9 +14,9 @@ public interface ImageStorageService {
 
     void init();
 
-    void store(MultipartFile file, long userId);
+    String store(MultipartFile file, long userId);
 
-    List<String> listAll(long userId);
+    List<ImageHistoryVo> listAll(long userId);
 
     Path load(String filename);
 
@@ -24,4 +25,6 @@ public interface ImageStorageService {
     boolean deleteAll(long userId);
 
     boolean deleteOne(long userId, long imageId);
+
+    int getCount(long user);
 }

@@ -5,6 +5,7 @@ import cn.theproudsoul.justwriteit.exception.StorageException;
 import cn.theproudsoul.justwriteit.model.ImageMetadataModel;
 import cn.theproudsoul.justwriteit.repository.ImageMetadataRepository;
 import cn.theproudsoul.justwriteit.service.ImageStorageService;
+import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     }
 
     @Override
-    public void store(MultipartFile file, long userId) {
+    public String store(MultipartFile file, long userId) {
         String originFilename = StringUtils.cleanPath(file.getOriginalFilename());
         String extension = StringUtils.getFilenameExtension(originFilename);
         String newName = UUID.randomUUID().toString();
@@ -81,6 +82,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
                 Files.copy(inputStream, userDirector.resolve(newName + '.' + extension),
                         StandardCopyOption.REPLACE_EXISTING);
                 imageMetadataRepository.insert(model);
+                return imageMetadataRepository.getById(model.getId()).getImageUrl();
             }
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + originFilename, e);
@@ -88,7 +90,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     }
 
     @Override
-    public List<String> listAll(long userId) {
+    public List<ImageHistoryVo> listAll(long userId) {
         return imageMetadataRepository.getUserImageList(userId);
     }
 
@@ -125,7 +127,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     @Override
     public boolean deleteOne(long userId, long imageId) {
         ImageMetadataModel model = imageMetadataRepository.getById(imageId);
-        if (model == null && model.getUserId() != userId) {
+        if (model == null || model.getUserId() != userId) {
             return false;
         }
         Path filePath = rootLocation.resolve(String.valueOf(userId)).resolve(StringUtils.getFilename(model.getImageUrl()));
@@ -139,6 +141,11 @@ public class ImageStorageServiceImpl implements ImageStorageService {
         }
         imageMetadataRepository.deleteOne(imageId);
         return true;
+    }
+
+    @Override
+    public int getCount(long user) {
+        return imageMetadataRepository.count(user);
     }
 
     /**

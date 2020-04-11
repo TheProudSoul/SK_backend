@@ -4,6 +4,7 @@ import cn.theproudsoul.justwriteit.constants.StorageProperties;
 import cn.theproudsoul.justwriteit.exception.StorageException;
 import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
 import cn.theproudsoul.justwriteit.service.FileStorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,13 @@ import java.util.stream.Stream;
  * @author TheProudSoul
  */
 @Service
+@Slf4j
 public class FileSystemStorageServiceImpl implements FileStorageService {
     private final Path rootLocation;
 
     public FileSystemStorageServiceImpl(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getFileLocation());
+        log.info("file store location {}", rootLocation);
     }
 
     @Override

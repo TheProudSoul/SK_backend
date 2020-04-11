@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.web.controller;
 
+import cn.theproudsoul.justwriteit.constants.ControllerPath;
 import cn.theproudsoul.justwriteit.model.UserModel;
 import cn.theproudsoul.justwriteit.service.UserService;
 import cn.theproudsoul.justwriteit.web.vo.UserLoginVo;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
  * @author TheProudSoul
  */
 @RestController
-@RequestMapping("/account")
+@RequestMapping(ControllerPath.ACCOUNT)
 public class UserController {
     @Autowired
     UserService userService;

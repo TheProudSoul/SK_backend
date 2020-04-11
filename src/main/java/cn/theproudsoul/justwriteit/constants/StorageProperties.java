@@ -16,5 +16,6 @@ public class StorageProperties {
      */
     private String fileLocation = "upload-dir";
     private String imageLocation = "image-upload-dir";
+    private String versionControlLocation = "version-control-dir";
 
 }
