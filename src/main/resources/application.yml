@@ -1,3 +1,5 @@
+spring.profiles.active: dev
+
 mybatis:
   mapper-locations: classpath:cn/theproudsoul/justwriteitservice/dao/*.xml
   type-aliases-package: cn.theproudsoul.justwriteitservice.model
@@ -6,7 +8,7 @@ mybatis:
 spring:
   datasource:
     name: mysql
-    url: jdbc:mysql://localhost:3306/justwriteit?characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://47.115.40.131:3306/justwriteit?characterEncoding=utf-8&serverTimezone=UTC
     username: justwriteit
     password: justwriteit
     type: com.alibaba.druid.pool.DruidDataSource
@@ -14,12 +16,7 @@ spring:
     host: ali.theproudsoul.cn
     port: 6379
 server:
-  port: 80
-
-storage:
-  fileLocation: src/main/resources/files/
-  versionControlLocation: src/main/resources/VC/
-  imageLocation: src/main/resources/images/
+  port: 9995
 
 logging:
   level:

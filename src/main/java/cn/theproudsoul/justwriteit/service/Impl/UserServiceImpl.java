@@ -1,11 +1,11 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.exception.UserAlreadyExistException;
+import cn.theproudsoul.justwriteit.model.UserModel;
 import cn.theproudsoul.justwriteit.repository.UserRepository;
+import cn.theproudsoul.justwriteit.service.UserService;
 import cn.theproudsoul.justwriteit.web.vo.UserLoginVo;
 import cn.theproudsoul.justwriteit.web.vo.UserRegistrationVo;
-import cn.theproudsoul.justwriteit.model.UserModel;
-import cn.theproudsoul.justwriteit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserModel registerNewUserAccount(UserRegistrationVo accountVo) {
@@ -32,11 +35,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long login(UserLoginVo user) {
+    public UserModel login(UserLoginVo user) {
         UserModel userModel = userRepository.findByUsername(user.getUsername());
-        if (userModel.getPassword().equals(user.getPassword())){
-            return userModel.getId();
-        } else return -1;
+        if (userModel == null) return null;
+        if (userModel.getPassword().equals(user.getPassword())) {
+            return userModel;
+        } else return null;
     }
 
     private boolean emailExists(final String email) {

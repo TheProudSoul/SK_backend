@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public class UserModel {
     private long id;
     private String username;

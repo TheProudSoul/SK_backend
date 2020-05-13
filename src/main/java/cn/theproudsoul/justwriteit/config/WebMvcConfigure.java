@@ -1,8 +1,10 @@
 package cn.theproudsoul.justwriteit.config;
 
+import cn.theproudsoul.justwriteit.constants.StorageProperties;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +18,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfigure implements WebMvcConfigurer {
+
+    @Autowired
+    private StorageProperties storageProperties;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/images/");
+                .addResourceLocations("file:" + storageProperties.getImagePathMapping());
     }
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:9080").allowedMethods(
+        registry.addMapping("/**").allowedOrigins("http://localhost:9080", "http://localhost:8080", "http://47.115.40.131:8080").allowedMethods(
 //                "get", "post", "delete"
                 "*"
         );
@@ -41,7 +48,6 @@ public class WebMvcConfigure implements WebMvcConfigurer {
         //3.在convert中添加配置信息
         fastConverter.setFastJsonConfig(fastJsonConfig);
 
-        HttpMessageConverter<?> converter = fastConverter;
-        return new HttpMessageConverters(converter);
+        return new HttpMessageConverters(fastConverter);
     }
 }

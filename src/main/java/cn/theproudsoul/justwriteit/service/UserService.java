@@ -10,5 +10,5 @@ import cn.theproudsoul.justwriteit.web.vo.UserRegistrationVo;
 public interface UserService {
     UserModel registerNewUserAccount(UserRegistrationVo accountVo);
 
-    long login(UserLoginVo user);
+    UserModel login(UserLoginVo user);
 }

@@ -20,4 +20,6 @@ public interface VersionControlService {
     List<VersionControlVo> listAll(long userId);
 
     void loadAsResource(long userId, long id, OutputStream outputStream) throws IOException;
+
+    boolean deleteVersion(long user, long id);
 }

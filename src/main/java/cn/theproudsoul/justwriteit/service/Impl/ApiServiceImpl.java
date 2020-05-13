@@ -22,25 +22,26 @@ public class ApiServiceImpl implements ApiService {
     private final Path rootLocation;
 
     public ApiServiceImpl(StorageProperties properties) {
-        rootLocation = Paths.get(properties.getFileLocation());;
+        rootLocation = Paths.get(properties.getFileLocation());
     }
 
     @Override
     public List<FileSystemNode> listFileSystem(long user) {
         Path path = rootLocation.resolve(String.valueOf(user));
         List<FileSystemNode> result = new ArrayList<>();
-        FileSystemNode fileSystemNode = new FileSystemNode();
         File[] files = path.toFile().listFiles();
+        if (files==null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            node.setName(file.getName());
-            node.setPathName(file.getPath().substring(path.toString().length()));
-            if (file.isFile()){
+            node.setTitle(file.getName());
+            node.setPathName(file.getPath().substring(path.toString().length() + 1));
+            node.setDirPath(node.getPathName().substring(0, node.getPathName().length()-node.getTitle().length()));
+
+            if (file.isFile()) {
                 node.setLeaf(true);
             } else {
                 node.setChildren(listFileSystemHelper(file, path));
             }
-            System.out.println(file.getName());
             result.add(node);
         }
         return result;
@@ -57,19 +58,20 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
-    List<FileSystemNode> listFileSystemHelper(File dir, Path path) {
+    private List<FileSystemNode> listFileSystemHelper(File dir, Path path) {
         List<FileSystemNode> result = new ArrayList<>();
         File[] files = dir.listFiles();
+        if (files==null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            node.setName(file.getName());
-            node.setPathName(file.getPath().substring(path.toString().length()));
-            if (file.isFile()){
+            node.setTitle(file.getName());
+            node.setPathName(file.getPath().substring(path.toString().length() + 1));
+            node.setDirPath(node.getPathName().substring(0, node.getPathName().length()-node.getTitle().length()));
+            if (file.isFile()) {
                 node.setLeaf(true);
             } else {
                 node.setChildren(listFileSystemHelper(file, path));
             }
-            System.out.println(file.getName());
             result.add(node);
         }
         return result;

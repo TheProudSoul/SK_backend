@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.web.vo;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,11 @@ import java.util.List;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public class FileSystemNode {
-    String name;
+    String title;
     String pathName;
+    String dirPath= "";
     boolean isLeaf;
     List<FileSystemNode> children;
 }

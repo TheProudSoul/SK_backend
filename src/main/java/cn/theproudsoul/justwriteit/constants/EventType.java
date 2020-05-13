@@ -5,5 +5,5 @@ package cn.theproudsoul.justwriteit.constants;
  */
 
 public enum EventType {
-    ADD, EDIT, MOVE, DELETE
+    ADD_FILE, DELETE_FILE, ADD_DIR, DELETE_DIR
 }

@@ -16,11 +16,11 @@ public interface ImageStorageService {
 
     String store(MultipartFile file, long userId);
 
-    List<ImageHistoryVo> listAll(long userId);
+    List<ImageHistoryVo> listAll(long userId, int offset, int limit);
 
-    Path load(String filename);
+//    Path load(String filename);
 
-    Path loadAsResource(long user, String filename);
+//    Path loadAsResource(long user, String filename);
 
     boolean deleteAll(long userId);
 

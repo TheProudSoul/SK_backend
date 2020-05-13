@@ -2,6 +2,7 @@ package cn.theproudsoul.justwriteit.web.result;
 
 /**
  * 平台错误描述定义，可根据索引查询具体错误描述。
+ *
  * @author TheProudSoul
  */
 public enum ERRORDetail {
@@ -31,7 +32,8 @@ public enum ERRORDetail {
     //操作失败
     RC_0303001("0303001", "sms 用户处理失败"),
     RC_0303002("0303002", "用户拒绝处理"),
-    RC_0303003("0303002", "用户验证失败"),
+    RC_0303003("0303003", "用户验证失败"),
+    RC_0303004("0303004", "超出账户限制"),
 
     //系统错误
     RC_0401001("0401001", "服务异常"),
@@ -40,7 +42,7 @@ public enum ERRORDetail {
     RC_0401006("0401006", "应用服务器缓存异常"),
     RC_0401007("0401007", "应用服务器超时"),
 
-    RC_6666666("0500000","异常,没有找到合适的结果描述");
+    RC_6666666("0500000", "异常,没有找到合适的结果描述");
 
     private String index;
     private String meaning;
@@ -66,12 +68,12 @@ public enum ERRORDetail {
         this.meaning = meaning;
     }
 
-    public String getResultCode(){
-        return this.index.substring(0,2);
+    public String getResultCode() {
+        return this.index.substring(0, 2);
     }
 
-    public String getDetails(){
-        return this.index+"("+this.meaning+")";
+    public String getDetails() {
+        return this.index + "(" + this.meaning + ")";
     }
 
     public static ERRORDetail getEnum(String index) {

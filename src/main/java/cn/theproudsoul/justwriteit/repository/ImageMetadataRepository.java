@@ -15,8 +15,8 @@ public interface ImageMetadataRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(@Param("model") ImageMetadataModel model);
 
-    @Select("SELECT id id, image_url imageUrl FROM image_metadata where user_id= #{userId}")
-    List<ImageHistoryVo> getUserImageList(long userId);
+    @Select("SELECT id id, image_url imageUrl FROM image_metadata where user_id= #{userId} ORDER BY create_time desc LIMIT #{offset}, #{limit}")
+    List<ImageHistoryVo> getUserImageList(long userId, int offset, int limit);
 
     @Select("SELECT id id, user_id userId, image_url imageUrl FROM image_metadata where id= #{id}")
     ImageMetadataModel getById(long id);

@@ -1,9 +1,9 @@
 package cn.theproudsoul.justwriteit.web.controller;
 
+import cn.theproudsoul.justwriteit.service.MetadataService;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.web.vo.FileJournalVo;
 import cn.theproudsoul.justwriteit.web.vo.ListRequestVo;
-import cn.theproudsoul.justwriteit.service.MetadataService;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -22,27 +22,34 @@ import java.util.List;
 @Slf4j
 @RestController
 public class NotificationController {
+
     private Multimap<Long, ListRequestVo> listRequests = Multimaps.synchronizedSetMultimap(HashMultimap.create());
 
     private final MetadataService metadataService;
-
 
     public NotificationController(MetadataService metadataService) {
         this.metadataService = metadataService;
     }
 
-    @GetMapping("/list")
-    public DeferredResult<List<FileJournalVo>> list(@RequestParam long userId, @RequestParam long journalId) {
+    /**
+     * 列出用户最新文件日志列表
+     *
+     * @param user 用户 ID
+     * @param journalId 文件日志 ID
+     * @return 后于参数文件日志 ID 的文件日志
+     */
+    @GetMapping("/{user}/list")
+    public DeferredResult<List<FileJournalVo>> list(@PathVariable long user, @RequestParam long journalId) {
         final DeferredResult<List<FileJournalVo>> result = new DeferredResult<>(null, Collections.emptyList());
         ListRequestVo listRequestVo = new ListRequestVo();
         listRequestVo.setJournalId(journalId);
-        listRequestVo.setUserId(userId);
+        listRequestVo.setUserId(user);
         listRequestVo.setResult(result);
-        listRequests.put(userId, listRequestVo);
+        listRequests.put(user, listRequestVo);
 
-        result.onCompletion(() -> listRequests.remove(userId, listRequestVo));
+        result.onCompletion(() -> listRequests.remove(user, listRequestVo));
 
-        List<FileJournalVo> list = metadataService.getLatestList(userId, journalId);
+        List<FileJournalVo> list = metadataService.getLatestList(user, journalId);
         if (list != null && !list.isEmpty()) {
             result.setResult(list);
         }
@@ -50,24 +57,52 @@ public class NotificationController {
         return result;
     }
 
+//    /**
+//     * @param vo 用户 ID, journalID, path, isDir
+//     * @return
+//     */
+//    @PostMapping(value = "/commit", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public WebResult commit(@RequestBody FileJournalVo vo) {
+//        long journalId = metadataService.commit(vo.getUserId(), vo.getJournalId(), vo.getPath(), vo.isDir());
+//        sendMessage(vo.getUserId());
+//        return WebResult.success(journalId);
+//    }
+
     /**
-     * @param vo 用户 ID, journalID, path
-     * @return
+     * commit-delete
+     *
+     * @param vo userId, path, dir
+     * @return 返回文件日志 ID
      */
-    @PostMapping(value = "/commit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commit(@RequestBody FileJournalVo vo) {
-        long journalId = metadataService.commit(vo.getUserId(), vo.getJournalId(), vo.getPath());
+    @PostMapping(value = "/commit-delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WebResult commitDelete(@RequestBody FileJournalVo vo) {
+        long journalId = metadataService.commitDelete(vo.getUserId(), vo.getPath(), vo.isDir());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);
     }
 
     /**
-     * @param vo 用户 ID, journalID, path
-     * @return
+     * commit-add
+     *
+     * @param vo userId, path, dir
+     * @return 返回文件日志 ID
      */
-    @PostMapping(value = "/commit-delete", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commitDelete(@RequestBody FileJournalVo vo) {
-        long journalId = metadataService.commitDelete(vo.getUserId(), vo.getJournalId(), vo.getPath());
+    @PostMapping(value = "/commit-add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WebResult commitAdd(@RequestBody FileJournalVo vo) {
+        long journalId = metadataService.commitAdd(vo.getUserId(), vo.getPath(), vo.isDir());
+        sendMessage(vo.getUserId());
+        return WebResult.success(journalId);
+    }
+
+    /**
+     * commit-edit
+     *
+     * @param vo userId, path, data
+     * @return 返回文件日志 ID
+     */
+    @PostMapping(value = "/commit-edit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WebResult commitEdit(@RequestBody FileJournalVo vo) {
+        long journalId = metadataService.commitEdit(vo.getUserId(), vo.getPath(), vo.getData());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);
     }

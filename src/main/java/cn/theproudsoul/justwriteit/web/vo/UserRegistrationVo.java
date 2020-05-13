@@ -2,7 +2,9 @@ package cn.theproudsoul.justwriteit.web.vo;
 
 import cn.theproudsoul.justwriteit.web.validators.PasswordMatches;
 import cn.theproudsoul.justwriteit.web.validators.ValidEmail;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Size;
 @PasswordMatches
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationVo {
     @NotNull
     @NotEmpty

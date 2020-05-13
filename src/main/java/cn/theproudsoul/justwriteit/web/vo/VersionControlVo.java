@@ -1,18 +1,21 @@
 package cn.theproudsoul.justwriteit.web.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 /**
  * @author zhengyijing
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VersionControlVo {
-    private String id;
+    private long id;
+
     private String name;
 
-    private Date time;
+    private String time;
 }

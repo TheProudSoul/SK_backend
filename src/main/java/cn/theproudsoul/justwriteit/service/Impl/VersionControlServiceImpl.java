@@ -1,6 +1,7 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
+import cn.theproudsoul.justwriteit.exception.ExceedAccountRestrictionException;
 import cn.theproudsoul.justwriteit.exception.StorageException;
 import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
 import cn.theproudsoul.justwriteit.model.VersionControlModel;
@@ -13,12 +14,10 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
@@ -39,7 +38,6 @@ public class VersionControlServiceImpl implements VersionControlService {
         this.rootLocation = Paths.get(properties.getVersionControlLocation());
         this.fileRootLocation = Paths.get(properties.getFileLocation());
         log.info("version control location {}", rootLocation);
-//        log.info("version control location {}", fileRootLocation);
         this.versionControlRepository = versionControlRepository;
     }
 
@@ -54,8 +52,13 @@ public class VersionControlServiceImpl implements VersionControlService {
 
     @Override
     public void store(long userId, String name) {
+        if (versionControlRepository.getCountByUserId(userId) >= 15) {
+            throw new ExceedAccountRestrictionException("UserId:" + userId + " try to store a new version ");
+        }
+        Path versionPath = this.rootLocation.resolve(String.valueOf(userId)).resolve(name);
         try (Stream<Path> stream = Files.walk(fileRootLocation.resolve(String.valueOf(userId)))) {
-            stream.forEach(source -> copy(source, this.rootLocation.resolve(String.valueOf(userId)).resolve(name).resolve(fileRootLocation.resolve(String.valueOf(userId)).relativize(source))));
+            Files.createDirectories(versionPath);
+            stream.forEach(source -> copy(source, versionPath.resolve(fileRootLocation.resolve(String.valueOf(userId)).relativize(source))));
         } catch (IOException e) {
             throw new StorageException("Failed to version.", e);
         }
@@ -81,9 +84,8 @@ public class VersionControlServiceImpl implements VersionControlService {
     @Override
     public void loadAsResource(long userId, long id, OutputStream outputStream) throws IOException {
 
-        try (
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-                ArchiveOutputStream out = new ZipArchiveOutputStream(bufferedOutputStream);
+        try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+             ArchiveOutputStream out = new ZipArchiveOutputStream(bufferedOutputStream)
         ) {
             Path start = load(userId, id);
             Files.walkFileTree(start, new SimpleFileVisitor<>() {
@@ -98,9 +100,7 @@ public class VersionControlServiceImpl implements VersionControlService {
 
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    try (
-                            InputStream input = new FileInputStream(file.toFile())
-                    ) {
+                    try (InputStream input = new FileInputStream(file.toFile())) {
                         ArchiveEntry entry = new ZipArchiveEntry(file.toFile(), start.relativize(file).toString());
                         out.putArchiveEntry(entry);
                         IOUtils.copy(input, out);
@@ -108,14 +108,30 @@ public class VersionControlServiceImpl implements VersionControlService {
                     }
                     return super.visitFile(file, attrs);
                 }
-
             });
-
         }
     }
 
-    Path load(long userId, long id) {
+    @Override
+    public boolean deleteVersion(long user, long id) {
+        // 验证用户
+        long userId = versionControlRepository.getUserIdById(id);
+        if (userId == 0 || user != userId) {
+            return false;
+        }
+
+        // 删除数据库数据
+        versionControlRepository.delete(id);
+        // 删除本地文件
+        FileSystemUtils.deleteRecursively(load(user, id).toFile());
+        return true;
+    }
+
+    private Path load(long userId, long id) {
         String name = versionControlRepository.getNameById(id);
+        if (name == null) {
+            throw new StorageFileNotFoundException("There is no such version for id " + id);
+        }
         return rootLocation.resolve(String.valueOf(userId)).resolve(name);
     }
 }

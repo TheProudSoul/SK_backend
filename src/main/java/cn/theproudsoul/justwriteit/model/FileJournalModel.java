@@ -1,11 +1,13 @@
 package cn.theproudsoul.justwriteit.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author TheProudSoul
  */
 @Data
+@EqualsAndHashCode
 public class FileJournalModel {
 
     private long id;

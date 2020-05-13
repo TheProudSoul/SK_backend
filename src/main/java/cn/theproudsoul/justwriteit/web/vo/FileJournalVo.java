@@ -1,6 +1,8 @@
 package cn.theproudsoul.justwriteit.web.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,6 +10,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileJournalVo {
 
     private long userId;
@@ -16,5 +20,9 @@ public class FileJournalVo {
 
     private String path;
 
+    private boolean dir;
+
     private int eventType;
+
+    private String data;
 }

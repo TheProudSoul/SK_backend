@@ -10,28 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ *  为网页和手机端提供接口
+ *
  * @author zhengyijing
  */
 @RestController
 @RequestMapping(ControllerPath.API)
 public class ApiController {
-    @Autowired
-    private ApiService apiService;
 
+    private final ApiService apiService;
+
+    public ApiController(ApiService apiService) {
+        this.apiService = apiService;
+    }
+
+    /**
+     * 将用户文件结构整理为 List
+     *
+     * @param user 用户 ID
+     * @return 返回用户文件系统结构
+     */
     @GetMapping("/file-system/{user}")
     public WebResult listFileSystem(@PathVariable long user){
         List<FileSystemNode> nodes = apiService.listFileSystem(user);
         return WebResult.success(nodes);
     }
 
+    /**
+     * 读取文件内容
+     *
+     * @param user 用户 ID
+     * @param path 文件路径
+     * @return 返回文件内容
+     */
     @GetMapping("/file-system/{user}/file")
     public WebResult readFile(@PathVariable long user, @RequestParam String path){
-        String nodes = apiService.readFile(user, path);
-        return WebResult.success(nodes);
-    }
-
-    @PostMapping("/file-system/{user}/file")
-    public WebResult writeFile(@PathVariable long user, @RequestBody String path){
         String nodes = apiService.readFile(user, path);
         return WebResult.success(nodes);
     }

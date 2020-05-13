@@ -13,7 +13,6 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -32,6 +31,8 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     private final Path rootLocation;
 
     private final ImageMetadataRepository imageMetadataRepository;
+
+    private final static String ALLOW_UPLOAD_IMAGE_EXT = "jpg jpeg png jiff gif webp svg ico bmp";
 
     @Autowired
     public ImageStorageServiceImpl(StorageProperties properties, ImageMetadataRepository imageMetadataRepository) {
@@ -63,9 +64,6 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             throw new IllegalArgumentException("文件必须在0-10M之间");
         }
         try {
-            if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + originFilename);
-            }
             if (originFilename.contains("..")) {
                 // This is a security check
                 throw new StorageException("Cannot store file with relative path outside current directory " + originFilename);
@@ -77,7 +75,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             ImageMetadataModel model = new ImageMetadataModel();
             model.setOriginName(originFilename);
             model.setUserId(userId);
-            model.setImageUrl("http://justwriteit.theproudsoul.cn/images/" + userId + "/" + newName + '.' + extension);
+            model.setImageUrl("http://47.115.40.131:9995/images/" + userId + "/" + newName + '.' + extension);
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, userDirector.resolve(newName + '.' + extension),
                         StandardCopyOption.REPLACE_EXISTING);
@@ -90,19 +88,18 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     }
 
     @Override
-    public List<ImageHistoryVo> listAll(long userId) {
-        return imageMetadataRepository.getUserImageList(userId);
+    public List<ImageHistoryVo> listAll(long userId, int offset, int limit) {
+        return imageMetadataRepository.getUserImageList(userId, offset, limit);
     }
 
-    @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
-    }
+//    private Path load(String filename) {
+//        return rootLocation.resolve(filename);
+//    }
 
-    @Override
-    public Path loadAsResource(long user, String filename) {
-        Path file = load(user + File.separator + filename);
-        return file;
+//    @Override
+//    public Path loadAsResource(long user, String filename) {
+//        Path file = load(user + File.separator + filename);
+//        return file;
 //        try {
 //            Resource resource = new UrlResource(file.toUri());
 //            if (resource.exists() || resource.isReadable()) {
@@ -115,7 +112,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
 //        } catch (MalformedURLException e) {
 //            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
 //        }
-    }
+//    }
 
     @Override
     public boolean deleteAll(long userId) {
@@ -151,14 +148,13 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     /**
      * 检测图片后缀
      *
-     * @param extension
-     * @return
+     * @param extension 文件后缀
+     * @return 是否为合法图片后缀
      */
     private boolean checkPicturesExtension(String extension) {
         if (null == extension) {
             return false;
         }
-        return true;
-//        return PropType.DRAW_ALLOW_UPLOAD_FILE_EXT.contains(extension);
+        return ALLOW_UPLOAD_IMAGE_EXT.contains(extension.toLowerCase());
     }
 }

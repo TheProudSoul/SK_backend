@@ -2,10 +2,7 @@ package cn.theproudsoul.justwriteit.repository;
 
 import cn.theproudsoul.justwriteit.model.VersionControlModel;
 import cn.theproudsoul.justwriteit.web.vo.VersionControlVo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +22,13 @@ public interface VersionControlRepository {
 
     @Select("SELECT name FROM version_control where id = #{id}")
     String getNameById(long id);
+
+    @Select("SELECT user_id FROM version_control where id = #{id}")
+    long getUserIdById(long id);
+
+    @Delete("delete from version_control where id = #{id}")
+    void delete(long id);
+
+    @Select("SELECT COUNT(*) FROM version_control where user_id = #{user_id}")
+    int getCountByUserId(long userId);
 }

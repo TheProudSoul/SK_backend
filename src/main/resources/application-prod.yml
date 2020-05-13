@@ -1,0 +1,9 @@
+storage:
+  fileLocation: /appdata/justwriteit/files/
+  versionControlLocation: /appdata/justwriteit/VC/
+  imageLocation: /appdata/justwriteit/images/
+  imagePathMapping: /appdata/justwriteit/images/
+
+logging:
+    level:
+      sql: ERROR

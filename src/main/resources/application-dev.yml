@@ -1,0 +1,9 @@
+storage:
+  fileLocation: src/main/resources/files/
+  versionControlLocation: src/main/resources/VC/
+  imageLocation: src/main/resources/images/
+  imagePathMapping: D:\justwriteit\src\main\resources\images\
+
+logging:
+  level:
+    sql: DEBUG
