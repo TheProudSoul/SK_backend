@@ -19,4 +19,6 @@ public class FileJournalModel {
     private String path;
 
     private int eventType;
+
+    private String description;
 }

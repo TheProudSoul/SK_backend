@@ -34,7 +34,7 @@ public class ImageController {
      * @param user       用户 ID
      * @return 按分页返回用户上传图片
      */
-    @GetMapping(path = "/{user}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{user}")
     public List<ImageHistoryVo> listHistory(Pagination pagination, @PathVariable long user) {
         return imageStorageService.listAll(user, (pagination.getPageNum() - 1) * pagination.getPageSize(), pagination.getPageSize());
     }

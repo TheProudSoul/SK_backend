@@ -17,4 +17,6 @@ public interface MetadataService {
     long commitAdd(long userId, String path, boolean dir);
 
     long commitEdit(long userId, String path, String data);
+
+    long commitMove(long userId, String path, String data);
 }

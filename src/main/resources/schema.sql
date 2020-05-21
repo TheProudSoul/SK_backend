@@ -32,6 +32,7 @@ CREATE TABLE `file_journal`
     `journal_id`  bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '日志 ID',
     `path`        varchar(255)        NOT NULL DEFAULT '' COMMENT '文件路径',
     `event_type`  TINYINT(3)          NOT NULL DEFAULT '0' COMMENT '事件类型',
+    `description` varchar(255)        NOT NULL DEFAULT '' COMMENT '额外信息',
     `create_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY pk_id (`id`),

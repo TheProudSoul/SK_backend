@@ -14,10 +14,7 @@ import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.List;
 
 /**
@@ -61,10 +58,10 @@ public class MetadataServiceImpl implements MetadataService {
         long journalId;
         try {
             if (isDir) {
-                journalId = insertFileJournal(userId, path, EventType.DELETE_DIR);
+                journalId = insertFileJournal(userId, path, EventType.DELETE_DIR, "");
                 FileSystemUtils.deleteRecursively(fileRootLocation.resolve(String.valueOf(userId)).resolve(path).toFile());
             } else {
-                journalId = insertFileJournal(userId, path, EventType.DELETE_FILE);
+                journalId = insertFileJournal(userId, path, EventType.DELETE_FILE, "");
                 Files.delete(fileRootLocation.resolve(String.valueOf(userId)).resolve(path));
             }
         } catch (IOException e) {
@@ -93,25 +90,40 @@ public class MetadataServiceImpl implements MetadataService {
             throw new StorageException("Could not create this path:", e);
         }
 
-        return insertFileJournal(userId, path, EventType.ADD_DIR);
+        return insertFileJournal(userId, path, EventType.ADD_DIR, "");
     }
 
     @Override
     public long commitEdit(long userId, String path, String data) {
         Path filePath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(path);
-        try (PrintWriter p = new PrintWriter(Files.newOutputStream(filePath, StandardOpenOption.CREATE))) {
+        try (PrintWriter p = new PrintWriter(Files.newOutputStream(filePath))) {
             p.write(data);
         } catch (IOException e) {
             throw new StorageException("Could not create this path: " + filePath.toString());
         }
-        return insertFileJournal(userId, path, EventType.ADD_FILE);
+        return insertFileJournal(userId, path, EventType.EDIT, "");
     }
 
-    private long insertFileJournal(long userId, String path, EventType eventType) {
+    @Override
+    public long commitMove(long userId, String path, String data) {
+        Path oldPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(path);
+        Path newPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(data);
+        try {
+            Files.move(oldPath, newPath,
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            log.error("Could not move from: " + oldPath.toString()+" to " + newPath.toString(), e);
+            throw new StorageException("Could not move from: " + path +" to "+ data);
+        }
+        return insertFileJournal(userId, data, EventType.MOVE, path);
+    }
+
+    private long insertFileJournal(long userId, String path, EventType eventType, String description) {
         FileJournalModel model = new FileJournalModel();
         model.setEventType(eventType.ordinal());
         model.setUserId(userId);
         model.setPath(path);
+        model.setDescription(description);
         long journalId = getNextJournalId(userId);
         model.setJournalId(journalId);
         fileJournalRepository.insert(model);

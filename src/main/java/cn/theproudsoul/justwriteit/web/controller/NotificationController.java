@@ -108,6 +108,19 @@ public class NotificationController {
     }
 
     /**
+     * commit-edit
+     *
+     * @param vo userId, path, data
+     * @return 返回文件日志 ID
+     */
+    @PostMapping(value = "/commit-move", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WebResult commitMove(@RequestBody FileJournalVo vo) {
+        long journalId = metadataService.commitMove(vo.getUserId(), vo.getPath(), vo.getData());
+        sendMessage(vo.getUserId());
+        return WebResult.success(journalId);
+    }
+
+    /**
      * 为长查询返回数据
      *
      * @param user 用户 Id
