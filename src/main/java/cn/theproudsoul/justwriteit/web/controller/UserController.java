@@ -42,7 +42,7 @@ public class UserController {
      */
     @PostMapping(path = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserModel registration(@Valid @RequestBody UserRegistrationVo user) {
-        return userService.registerNewUserAccount(user);
+    public WebResult registration(@Valid @RequestBody UserRegistrationVo user) {
+        return WebResult.success(userService.registerNewUserAccount(user));
     }
 }

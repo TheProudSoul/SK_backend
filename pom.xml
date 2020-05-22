@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.theproudsoul</groupId>
-    <artifactId>justwriteit</artifactId>
-    <version>1.1.1</version>
-    <name>justwriteit</name>
+    <artifactId>super_knowledge</artifactId>
+    <version>1.2.0</version>
+    <name>SuperKnowledge</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
