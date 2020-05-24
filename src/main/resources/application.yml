@@ -8,7 +8,7 @@ mybatis:
 spring:
   datasource:
     name: mysql
-    url: jdbc:mysql://localhost:3306/justwriteit?characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://47.115.40.131:3306/justwriteit?characterEncoding=utf-8&serverTimezone=UTC
     username: justwriteit
     password: justwriteit
     type: com.alibaba.druid.pool.DruidDataSource

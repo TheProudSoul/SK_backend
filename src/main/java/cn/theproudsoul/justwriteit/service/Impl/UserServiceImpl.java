@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
+import cn.theproudsoul.justwriteit.web.exception.UnauthorizedException;
 import cn.theproudsoul.justwriteit.web.exception.UserAlreadyExistException;
 import cn.theproudsoul.justwriteit.web.exception.UserNotFoundException;
 import cn.theproudsoul.justwriteit.persistence.model.UserModel;
@@ -39,10 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel login(UserLoginVo user) {
         UserModel userModel = userRepository.findByEmail(user.getEmail());
-        if (userModel == null) return null;
+        if (userModel == null) throw new UserNotFoundException("There is no account with that email address: " + user.getEmail());
         if (userModel.getPassword().equals(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()))) {
             return userModel;
-        } else return null;
+        } else throw new UnauthorizedException("Email and password don't match.");
     }
 
     @Override
