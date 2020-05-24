@@ -1,12 +1,10 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
-import cn.theproudsoul.justwriteit.repository.ImageMetadataRepository;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.web.exception.StorageFileNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.*;

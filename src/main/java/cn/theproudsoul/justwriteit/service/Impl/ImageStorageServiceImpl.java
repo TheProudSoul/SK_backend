@@ -1,9 +1,9 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.model.ImageMetadataModel;
-import cn.theproudsoul.justwriteit.repository.ImageMetadataRepository;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.persistence.model.ImageMetadataModel;
+import cn.theproudsoul.justwriteit.persistence.repository.ImageMetadataRepository;
 import cn.theproudsoul.justwriteit.service.ImageStorageService;
 import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +55,6 @@ public class ImageStorageServiceImpl implements ImageStorageService {
         String originFilename = StringUtils.cleanPath(file.getOriginalFilename());
         String extension = StringUtils.getFilenameExtension(originFilename);
         String newName = UUID.randomUUID().toString();
-        // TODO enum 类型
         if (!checkPicturesExtension(extension)) {
             throw new StorageException("图片类型不支持！");
         }

@@ -1,7 +1,7 @@
-package cn.theproudsoul.justwriteit.repository;
+package cn.theproudsoul.justwriteit.persistence.repository;
 
 import cn.theproudsoul.justwriteit.web.vo.FileJournalVo;
-import cn.theproudsoul.justwriteit.model.FileJournalModel;
+import cn.theproudsoul.justwriteit.persistence.model.FileJournalModel;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

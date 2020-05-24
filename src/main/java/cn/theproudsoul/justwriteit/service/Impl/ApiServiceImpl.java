@@ -1,7 +1,7 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
+import cn.theproudsoul.justwriteit.web.exception.StorageFileNotFoundException;
 import cn.theproudsoul.justwriteit.service.ApiService;
 import cn.theproudsoul.justwriteit.web.vo.FileSystemNode;
 import org.springframework.stereotype.Service;

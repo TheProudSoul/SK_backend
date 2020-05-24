@@ -1,4 +1,4 @@
-package cn.theproudsoul.justwriteit.model;
+package cn.theproudsoul.justwriteit.persistence.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

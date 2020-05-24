@@ -2,6 +2,7 @@ package cn.theproudsoul.justwriteit.web.controller;
 
 import cn.theproudsoul.justwriteit.constants.ControllerPath;
 import cn.theproudsoul.justwriteit.service.VersionControlService;
+import cn.theproudsoul.justwriteit.utils.JwtTokenUtil;
 import cn.theproudsoul.justwriteit.web.result.ERRORDetail;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.web.vo.VersionControlVo;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -33,7 +35,8 @@ public class VCController {
      * @return 返回成功码
      */
     @GetMapping("/{user}")
-    public WebResult getVersion(@PathVariable long user) {
+    public WebResult getVersion(HttpServletRequest request, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
         return WebResult.success(versionControlService.listAll(user));
     }
 
@@ -45,7 +48,8 @@ public class VCController {
      * @param id 版本 ID
      */
     @GetMapping("/{user}/{id}")
-    public void getVersion(HttpServletResponse response, @PathVariable long user, @PathVariable long id) {
+    public void getVersion(HttpServletRequest request, HttpServletResponse response, @PathVariable long user, @PathVariable long id) {
+        JwtTokenUtil.validateToken(request, user);
         try {
             ServletOutputStream outputStream = response.getOutputStream();
             versionControlService.loadAsResource(user, id, outputStream);

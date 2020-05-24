@@ -1,6 +1,7 @@
 package cn.theproudsoul.justwriteit.web.controller;
 
 import cn.theproudsoul.justwriteit.service.MetadataService;
+import cn.theproudsoul.justwriteit.utils.JwtTokenUtil;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.web.vo.FileJournalVo;
 import cn.theproudsoul.justwriteit.web.vo.ListRequestVo;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class NotificationController {
      * @return 后于参数文件日志 ID 的文件日志
      */
     @GetMapping("/{user}/list")
-    public DeferredResult<List<FileJournalVo>> list(@PathVariable long user, @RequestParam long journalId) {
+    public DeferredResult<List<FileJournalVo>> list(HttpServletRequest request, @PathVariable long user, @RequestParam long journalId) {
+        JwtTokenUtil.validateToken(request, user);
         final DeferredResult<List<FileJournalVo>> result = new DeferredResult<>(null, Collections.emptyList());
         ListRequestVo listRequestVo = new ListRequestVo();
         listRequestVo.setJournalId(journalId);
@@ -75,7 +78,8 @@ public class NotificationController {
      * @return 返回文件日志 ID
      */
     @PostMapping(value = "/commit-delete", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commitDelete(@RequestBody FileJournalVo vo) {
+    public WebResult commitDelete(HttpServletRequest request, @RequestBody FileJournalVo vo) {
+        JwtTokenUtil.validateToken(request, vo.getUserId());
         long journalId = metadataService.commitDelete(vo.getUserId(), vo.getPath(), vo.isDir());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);
@@ -88,7 +92,8 @@ public class NotificationController {
      * @return 返回文件日志 ID
      */
     @PostMapping(value = "/commit-add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commitAdd(@RequestBody FileJournalVo vo) {
+    public WebResult commitAdd(HttpServletRequest request, @RequestBody FileJournalVo vo) {
+        JwtTokenUtil.validateToken(request, vo.getUserId());
         long journalId = metadataService.commitAdd(vo.getUserId(), vo.getPath(), vo.isDir());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);
@@ -101,7 +106,8 @@ public class NotificationController {
      * @return 返回文件日志 ID
      */
     @PostMapping(value = "/commit-edit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commitEdit(@RequestBody FileJournalVo vo) {
+    public WebResult commitEdit(HttpServletRequest request, @RequestBody FileJournalVo vo) {
+        JwtTokenUtil.validateToken(request, vo.getUserId());
         long journalId = metadataService.commitEdit(vo.getUserId(), vo.getPath(), vo.getData());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);
@@ -114,7 +120,8 @@ public class NotificationController {
      * @return 返回文件日志 ID
      */
     @PostMapping(value = "/commit-move", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResult commitMove(@RequestBody FileJournalVo vo) {
+    public WebResult commitMove(HttpServletRequest request, @RequestBody FileJournalVo vo) {
+        JwtTokenUtil.validateToken(request, vo.getUserId());
         long journalId = metadataService.commitMove(vo.getUserId(), vo.getPath(), vo.getData());
         sendMessage(vo.getUserId());
         return WebResult.success(journalId);

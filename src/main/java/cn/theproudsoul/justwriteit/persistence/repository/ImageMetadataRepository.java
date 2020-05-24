@@ -1,6 +1,6 @@
-package cn.theproudsoul.justwriteit.repository;
+package cn.theproudsoul.justwriteit.persistence.repository;
 
-import cn.theproudsoul.justwriteit.model.ImageMetadataModel;
+import cn.theproudsoul.justwriteit.persistence.model.ImageMetadataModel;
 import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import org.apache.ibatis.annotations.*;
 

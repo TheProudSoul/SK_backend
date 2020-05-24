@@ -1,8 +1,8 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.web.exception.StorageFileNotFoundException;
 import cn.theproudsoul.justwriteit.service.FileStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -10,18 +10,11 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.stream.Stream;
 
 /**
  * @author TheProudSoul

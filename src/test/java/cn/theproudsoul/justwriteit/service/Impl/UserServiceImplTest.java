@@ -1,8 +1,8 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
-import cn.theproudsoul.justwriteit.exception.UserAlreadyExistException;
-import cn.theproudsoul.justwriteit.model.UserModel;
-import cn.theproudsoul.justwriteit.repository.UserRepository;
+import cn.theproudsoul.justwriteit.web.exception.UserAlreadyExistException;
+import cn.theproudsoul.justwriteit.persistence.model.UserModel;
+import cn.theproudsoul.justwriteit.persistence.repository.UserRepository;
 import cn.theproudsoul.justwriteit.web.vo.UserLoginVo;
 import cn.theproudsoul.justwriteit.web.vo.UserRegistrationVo;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +51,7 @@ class UserServiceImplTest {
         assertEquals(model, result);
 
         // test fail
-        when(repository.findByEmail(email)).thenReturn(1L);
+        when(repository.findByEmail(email)).thenReturn(result);
         Exception exception = assertThrows(UserAlreadyExistException.class, () -> service.registerNewUserAccount(registrationVo));
         assertEquals("There is an account with that email address: " + email, exception.getMessage());
 
@@ -59,25 +59,25 @@ class UserServiceImplTest {
 
     @Test
     void loginShouldSuccess() {
-        UserLoginVo loginVo = new UserLoginVo(username, password);
-        when(repository.findByUsername(username)).thenReturn(model);
+        UserLoginVo loginVo = new UserLoginVo(email, password);
+        when(repository.findByEmail(email)).thenReturn(model);
 
         assertEquals(model, service.login(loginVo));
     }
 
     @Test
     void loginShouldFailI() {
-        UserLoginVo loginVo = new UserLoginVo(username, password);
-        when(repository.findByUsername(username)).thenReturn(null);
+        UserLoginVo loginVo = new UserLoginVo(email, password);
+        when(repository.findByEmail(email)).thenReturn(null);
 
         assertNull(service.login(loginVo));
     }
 
     @Test
     void loginShouldFailII() {
-        UserLoginVo loginVo = new UserLoginVo(username, password);
+        UserLoginVo loginVo = new UserLoginVo(email, password);
         model.setPassword(UUID.randomUUID().toString());
-        when(repository.findByUsername(username)).thenReturn(model);
+        when(repository.findByEmail(email)).thenReturn(model);
 
         assertNull(service.login(loginVo));
     }

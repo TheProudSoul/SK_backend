@@ -2,6 +2,7 @@ package cn.theproudsoul.justwriteit.web.controller;
 
 import cn.theproudsoul.justwriteit.constants.ControllerPath;
 import cn.theproudsoul.justwriteit.service.FileStorageService;
+import cn.theproudsoul.justwriteit.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -42,8 +44,8 @@ public class FileController {
      * @param user 用户 ID
      */
     @GetMapping("/{user}/retrieve")
-    public void retrieve(HttpServletResponse response, @RequestParam String path, @PathVariable long user) {
-//        String data = apiService.readFile(user, path);
+    public void retrieve(HttpServletRequest request, HttpServletResponse response, @RequestParam String path, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
         try {
             ServletOutputStream outputStream = response.getOutputStream();
 //            outputStream.write(data.getBytes(StandardCharsets.UTF_8));

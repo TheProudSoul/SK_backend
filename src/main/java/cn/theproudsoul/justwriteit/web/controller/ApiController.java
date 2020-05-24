@@ -2,11 +2,13 @@ package cn.theproudsoul.justwriteit.web.controller;
 
 import cn.theproudsoul.justwriteit.constants.ControllerPath;
 import cn.theproudsoul.justwriteit.service.ApiService;
+import cn.theproudsoul.justwriteit.utils.JwtTokenUtil;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.web.vo.FileSystemNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,7 +33,8 @@ public class ApiController {
      * @return 返回用户文件系统结构
      */
     @GetMapping("/file-system/{user}")
-    public WebResult listFileSystem(@PathVariable long user){
+    public WebResult listFileSystem(HttpServletRequest request, @PathVariable long user){
+        JwtTokenUtil.validateToken(request, user);
         List<FileSystemNode> nodes = apiService.listFileSystem(user);
         return WebResult.success(nodes);
     }
@@ -44,7 +47,8 @@ public class ApiController {
      * @return 返回文件内容
      */
     @GetMapping("/file-system/{user}/file")
-    public WebResult readFile(@PathVariable long user, @RequestParam String path){
+    public WebResult readFile(HttpServletRequest request, @PathVariable long user, @RequestParam String path){
+        JwtTokenUtil.validateToken(request, user);
         String nodes = apiService.readFile(user, path);
         return WebResult.success(nodes);
     }

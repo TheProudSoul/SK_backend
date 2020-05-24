@@ -1,9 +1,9 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.model.FileJournalModel;
-import cn.theproudsoul.justwriteit.repository.FileJournalRepository;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.persistence.model.FileJournalModel;
+import cn.theproudsoul.justwriteit.persistence.repository.FileJournalRepository;
 import cn.theproudsoul.justwriteit.web.vo.FileJournalVo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -9,4 +9,4 @@ logging:
     com:
       spring:
         jiminshiro:
-          mapper: debug
+          mapper: DEBUG

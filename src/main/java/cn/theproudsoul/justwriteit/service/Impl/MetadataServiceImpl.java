@@ -2,10 +2,10 @@ package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.EventType;
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
-import cn.theproudsoul.justwriteit.model.FileJournalModel;
-import cn.theproudsoul.justwriteit.repository.FileJournalRepository;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.web.exception.StorageFileNotFoundException;
+import cn.theproudsoul.justwriteit.persistence.model.FileJournalModel;
+import cn.theproudsoul.justwriteit.persistence.repository.FileJournalRepository;
 import cn.theproudsoul.justwriteit.service.MetadataService;
 import cn.theproudsoul.justwriteit.web.vo.FileJournalVo;
 import lombok.extern.slf4j.Slf4j;

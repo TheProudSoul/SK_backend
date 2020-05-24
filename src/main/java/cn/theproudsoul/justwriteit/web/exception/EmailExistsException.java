@@ -1,4 +1,4 @@
-package cn.theproudsoul.justwriteit.web.validators;
+package cn.theproudsoul.justwriteit.web.exception;
 
 /**
  * @author TheProudSoul

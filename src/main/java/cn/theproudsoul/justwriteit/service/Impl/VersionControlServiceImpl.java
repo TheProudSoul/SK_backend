@@ -1,11 +1,11 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
 import cn.theproudsoul.justwriteit.constants.StorageProperties;
-import cn.theproudsoul.justwriteit.exception.ExceedAccountRestrictionException;
-import cn.theproudsoul.justwriteit.exception.StorageException;
-import cn.theproudsoul.justwriteit.exception.StorageFileNotFoundException;
-import cn.theproudsoul.justwriteit.model.VersionControlModel;
-import cn.theproudsoul.justwriteit.repository.VersionControlRepository;
+import cn.theproudsoul.justwriteit.web.exception.ExceedAccountRestrictionException;
+import cn.theproudsoul.justwriteit.web.exception.StorageException;
+import cn.theproudsoul.justwriteit.web.exception.StorageFileNotFoundException;
+import cn.theproudsoul.justwriteit.persistence.model.VersionControlModel;
+import cn.theproudsoul.justwriteit.persistence.repository.VersionControlRepository;
 import cn.theproudsoul.justwriteit.service.VersionControlService;
 import cn.theproudsoul.justwriteit.web.vo.VersionControlVo;
 import lombok.extern.slf4j.Slf4j;

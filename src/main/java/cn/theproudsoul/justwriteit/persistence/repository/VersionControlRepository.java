@@ -1,6 +1,6 @@
-package cn.theproudsoul.justwriteit.repository;
+package cn.theproudsoul.justwriteit.persistence.repository;
 
-import cn.theproudsoul.justwriteit.model.VersionControlModel;
+import cn.theproudsoul.justwriteit.persistence.model.VersionControlModel;
 import cn.theproudsoul.justwriteit.web.vo.VersionControlVo;
 import org.apache.ibatis.annotations.*;
 

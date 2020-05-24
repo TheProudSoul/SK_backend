@@ -2,15 +2,16 @@ package cn.theproudsoul.justwriteit.web.controller;
 
 import cn.theproudsoul.justwriteit.constants.ControllerPath;
 import cn.theproudsoul.justwriteit.service.ImageStorageService;
+import cn.theproudsoul.justwriteit.utils.JwtTokenUtil;
 import cn.theproudsoul.justwriteit.web.result.ERRORDetail;
 import cn.theproudsoul.justwriteit.web.result.Pagination;
 import cn.theproudsoul.justwriteit.web.result.WebResult;
 import cn.theproudsoul.justwriteit.web.vo.ImageHistoryVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -35,7 +36,8 @@ public class ImageController {
      * @return 按分页返回用户上传图片
      */
     @GetMapping(path = "/{user}")
-    public List<ImageHistoryVo> listHistory(Pagination pagination, @PathVariable long user) {
+    public List<ImageHistoryVo> listHistory(HttpServletRequest request, Pagination pagination, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
         return imageStorageService.listAll(user, (pagination.getPageNum() - 1) * pagination.getPageSize(), pagination.getPageSize());
     }
 
@@ -46,7 +48,8 @@ public class ImageController {
      * @return 按分页返回用户上传图片
      */
     @GetMapping("/{user}/total")
-    public int getCount(@PathVariable long user) {
+    public int getCount(HttpServletRequest request, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
         return imageStorageService.getCount(user);
     }
 
@@ -58,22 +61,22 @@ public class ImageController {
      * @return 操作执行结果
      */
     @PostMapping("/{user}")
-    public WebResult handleImageUpload(@RequestParam("file") MultipartFile file, @PathVariable long user) {
-        // TODO 验证用户
+    public WebResult handleImageUpload(HttpServletRequest request, @RequestParam("file") MultipartFile file, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
         return WebResult.success(imageStorageService.store(file, user));
     }
 
     /**
      * 删除单张图片
      *
-     * @param userId  用户 ID
+     * @param user  用户 ID
      * @param imageId 删除的图片 ID
      * @return 操作执行结果
      */
-    @DeleteMapping("/{userId}/{imageId}")
-    public WebResult handleImageDeleteOne(@PathVariable long userId, @PathVariable long imageId) {
-        // 检测用户权限
-        if (imageStorageService.deleteOne(userId, imageId)) {
+    @DeleteMapping("/{user}/{imageId}")
+    public WebResult handleImageDeleteOne(HttpServletRequest request, @PathVariable long user, @PathVariable long imageId) {
+        JwtTokenUtil.validateToken(request, user);
+        if (imageStorageService.deleteOne(user, imageId)) {
             return WebResult.success();
         }
         return WebResult.error(ERRORDetail.RC_0303003);
@@ -82,13 +85,15 @@ public class ImageController {
     /**
      * 删除所有图片
      *
-     * @param userId 用户 ID
+     * @param user 用户 ID
      * @return 操作执行结果
      */
-    @DeleteMapping("/{userId}")
-    public WebResult handleImageDeleteAll(@PathVariable long userId) {
-        // 检测用户权限
-        imageStorageService.deleteAll(userId);
-        return WebResult.success();
+    @DeleteMapping("/{user}")
+    public WebResult handleImageDeleteAll(HttpServletRequest request, @PathVariable long user) {
+        JwtTokenUtil.validateToken(request, user);
+        if (imageStorageService.deleteAll(user)) {
+            return WebResult.success();
+        }
+        return WebResult.error("failed");
     }
 }

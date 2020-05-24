@@ -13,9 +13,16 @@ spring:
     password: justwriteit
     type: com.alibaba.druid.pool.DruidDataSource
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+
 server:
   port: 9999
 
 logging:
   level:
-    sql: DEBUG
+    root: INFO
+    druid.sql.Statement: DEBUG
+
+jwt.secret: theproudsoul

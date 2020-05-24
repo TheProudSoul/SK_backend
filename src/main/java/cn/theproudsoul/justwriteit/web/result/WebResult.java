@@ -1,8 +1,15 @@
 package cn.theproudsoul.justwriteit.web.result;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author TheProudSoul
  */
+@ToString
+@Getter
+@Setter
 public class WebResult {
     private String errCode;
     private String errMsg;

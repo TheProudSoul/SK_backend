@@ -1,5 +1,6 @@
 package cn.theproudsoul.justwriteit.web.vo;
 
+import cn.theproudsoul.justwriteit.web.validators.ValidEmail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,8 @@ public class UserLoginVo {
 
     @NotNull
     @NotEmpty
-    private String username;
+    @ValidEmail
+    private String email;
 
     @NotNull
     @Size(min = 8, max = 30)

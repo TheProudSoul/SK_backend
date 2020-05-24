@@ -9,4 +9,5 @@ public interface ControllerPath {
     String FILE = "/file";
     String API = "/api";
     String ACCOUNT = "/account";
+    String USER = "/user";
 }

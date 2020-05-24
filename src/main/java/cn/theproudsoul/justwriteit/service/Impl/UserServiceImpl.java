@@ -1,13 +1,15 @@
 package cn.theproudsoul.justwriteit.service.Impl;
 
-import cn.theproudsoul.justwriteit.exception.UserAlreadyExistException;
-import cn.theproudsoul.justwriteit.model.UserModel;
-import cn.theproudsoul.justwriteit.repository.UserRepository;
+import cn.theproudsoul.justwriteit.web.exception.UserAlreadyExistException;
+import cn.theproudsoul.justwriteit.web.exception.UserNotFoundException;
+import cn.theproudsoul.justwriteit.persistence.model.UserModel;
+import cn.theproudsoul.justwriteit.persistence.repository.UserRepository;
 import cn.theproudsoul.justwriteit.service.UserService;
 import cn.theproudsoul.justwriteit.web.vo.UserLoginVo;
 import cn.theproudsoul.justwriteit.web.vo.UserRegistrationVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.theproudsoul.justwriteit.web.vo.UserVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 /**
  * @author TheProudSoul
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
         }
         UserModel model = new UserModel();
         model.setUsername(accountVo.getUsername());
-        model.setPassword(accountVo.getPassword());
+        model.setPassword(DigestUtils.md5DigestAsHex(accountVo.getPassword().getBytes()));
         model.setEmail(accountVo.getEmail());
         userRepository.save(model);
         return model;
@@ -36,11 +38,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel login(UserLoginVo user) {
-        UserModel userModel = userRepository.findByUsername(user.getUsername());
+        UserModel userModel = userRepository.findByEmail(user.getEmail());
         if (userModel == null) return null;
-        if (userModel.getPassword().equals(user.getPassword())) {
+        if (userModel.getPassword().equals(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()))) {
             return userModel;
         } else return null;
+    }
+
+    @Override
+    public UserVo loadUserByUserId(long userId) throws UserNotFoundException {
+
+        UserModel user = userRepository.findByUserId(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User not found with userID: " + userId);
+        }
+        return UserVo.builder().id(userId).username(user.getUsername()).email(user.getEmail()).build();
     }
 
     private boolean emailExists(final String email) {
