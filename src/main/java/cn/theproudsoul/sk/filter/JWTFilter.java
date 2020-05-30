@@ -28,8 +28,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String path = req.getRequestURI();
         log.info("{} {} {}", req.getMethod(), path, req.getHeader("Content-Type"));
         // 无需验证token
-        if (path.contains("/account")
-                || path.contains("/images")
+        if (path.contains("/images")
                 || (path.contains("/retrieve"))) {
             chain.doFilter(req, res);
             return;

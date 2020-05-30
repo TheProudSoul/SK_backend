@@ -1,5 +1,6 @@
 package cn.theproudsoul.sk.config;
 
+import cn.theproudsoul.sk.constants.ControllerPath;
 import cn.theproudsoul.sk.constants.StorageProperties;
 import cn.theproudsoul.sk.filter.ExceptionHandlerFilter;
 import cn.theproudsoul.sk.filter.JWTFilter;
@@ -43,8 +44,12 @@ public class WebMvcConfigure implements WebMvcConfigurer {
         log.info("注册 JWT 过滤器");
         FilterRegistrationBean<JWTFilter> registration = new FilterRegistrationBean<>(jWTFilter);
 
-        registration.addUrlPatterns("*");
-
+        registration.addUrlPatterns(ControllerPath.API+"/*");
+        registration.addUrlPatterns(ControllerPath.IMAGE+"/*");
+        registration.addUrlPatterns(ControllerPath.NOTIFICATION+"/*");
+        registration.addUrlPatterns(ControllerPath.VC+"/*");
+        registration.addUrlPatterns(ControllerPath.USER+"/*");
+        registration.addUrlPatterns(ControllerPath.FILE+"/*");
         registration.setName("JWTFilter");
         registration.setOrder(Integer.MAX_VALUE);  // 这个order的默认值是Integer.MAX_VALUE 也就是int的最大值
         return registration;

@@ -1,8 +1,8 @@
-package cn.theproudsoul.justwriteit.utils;
+package cn.theproudsoul.sk.utils;
 
-import cn.theproudsoul.justwriteit.persistence.model.UserModel;
-import cn.theproudsoul.justwriteit.web.exception.InvalidTokenException;
-import cn.theproudsoul.justwriteit.web.exception.UnauthorizedException;
+import cn.theproudsoul.sk.persistence.model.UserModel;
+import cn.theproudsoul.sk.web.exception.InvalidTokenException;
+import cn.theproudsoul.sk.web.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,7 +20,7 @@ import java.util.function.Function;
 @Configuration
 public class JwtTokenUtil implements Serializable {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // 5h
+    public static final long JWT_TOKEN_VALIDITY = 72 * 60 * 60; // 3 days
 
     @Value("${jwt.secret}")
     private String secret;
