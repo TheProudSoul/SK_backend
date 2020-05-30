@@ -17,6 +17,7 @@ CREATE TABLE `image_metadata`
     `id`          bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
     `user_id`     bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '图片上传用户 ID',
     `image_url`   varchar(255)        NOT NULL DEFAULT '' COMMENT '图片路径',
+    `scale_url`   varchar(255)        NOT NULL DEFAULT '' COMMENT '小型的 base64 编码的缩略图',
     `origin_name` varchar(255)        NOT NULL DEFAULT '' COMMENT '图片原始文件名',
     `create_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

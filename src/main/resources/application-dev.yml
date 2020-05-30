@@ -2,7 +2,8 @@ storage:
   fileLocation: src/main/resources/files/
   versionControlLocation: src/main/resources/VC/
   imageLocation: src/main/resources/images/
-  imagePathMapping: C:\Users\only-\Documents\Workspace\SK_backend\src\main\resources\images
+  imagePathMapping: C:\Users\only-\Documents\Workspace\SK_backend\src\main\resources\images\
+
 
 logging:
   level:
