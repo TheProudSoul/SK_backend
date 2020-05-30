@@ -12,10 +12,15 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class FileSystemNode {
+public class FileSystemNode implements Comparable<FileSystemNode>  {
     String title;
     String pathName;
     String dirPath= "";
     boolean isLeaf;
     List<FileSystemNode> children;
+
+    @Override
+    public int compareTo(FileSystemNode o) {
+        return this.title.compareTo(o.title);
+    }
 }

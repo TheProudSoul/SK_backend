@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,12 +31,13 @@ public class ApiServiceImpl implements ApiService {
         Path path = rootLocation.resolve(String.valueOf(user));
         List<FileSystemNode> result = new ArrayList<>();
         File[] files = path.toFile().listFiles();
-        if (files==null) return result;
+        if (files == null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            node.setTitle(file.getName());
+            String fileTitle = file.getName();
+            node.setTitle(fileTitle.substring(0, fileTitle.length() - 3));
             node.setPathName(file.getPath().substring(path.toString().length() + 1));
-            node.setDirPath(node.getPathName().substring(0, node.getPathName().length()-node.getTitle().length()));
+            node.setDirPath(node.getPathName().substring(0, node.getPathName().length() - node.getTitle().length()));
 
             if (file.isFile()) {
                 node.setLeaf(true);
@@ -44,6 +46,7 @@ public class ApiServiceImpl implements ApiService {
             }
             result.add(node);
         }
+        Collections.sort(result);
         return result;
     }
 
@@ -61,12 +64,13 @@ public class ApiServiceImpl implements ApiService {
     private List<FileSystemNode> listFileSystemHelper(File dir, Path path) {
         List<FileSystemNode> result = new ArrayList<>();
         File[] files = dir.listFiles();
-        if (files==null) return result;
+        if (files == null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            node.setTitle(file.getName());
+            String fileTitle = file.getName();
+            node.setTitle(fileTitle.substring(0, fileTitle.length() - 3));
             node.setPathName(file.getPath().substring(path.toString().length() + 1));
-            node.setDirPath(node.getPathName().substring(0, node.getPathName().length()-node.getTitle().length()));
+            node.setDirPath(node.getPathName().substring(0, node.getPathName().length() - node.getTitle().length()));
             if (file.isFile()) {
                 node.setLeaf(true);
             } else {
@@ -74,6 +78,7 @@ public class ApiServiceImpl implements ApiService {
             }
             result.add(node);
         }
+        Collections.sort(result);
         return result;
     }
 }
