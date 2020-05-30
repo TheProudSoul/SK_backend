@@ -36,7 +36,7 @@ public class WebMvcConfigure implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         log.info("ImagePathMapping: {}", storageProperties.getImagePathMapping());
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:/" + storageProperties.getImagePathMapping());
+                .addResourceLocations("file:" + storageProperties.getImagePathMapping());
     }
 
     @Bean
@@ -72,7 +72,7 @@ public class WebMvcConfigure implements WebMvcConfigurer {
         // 是否允许证书 不再默认开启
 //        config.setAllowCredentials(true);
         // 设置允许跨域请求的域名
-        config.addAllowedOrigin("http://localhost:9080");
+        config.addAllowedOrigin("app://.");
         config.addAllowedOrigin("http://localhost:8080");
         // 设置允许的方法
         config.addAllowedMethod("*");

@@ -1,5 +1,9 @@
 HELP.md
 target/
+src/main/resources/files/**
+src/main/resources/images/**
+src/main/resources/static/**
+src/main/resources/VC/**
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
