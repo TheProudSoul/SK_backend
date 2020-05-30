@@ -108,8 +108,8 @@ public class MetadataServiceImpl implements MetadataService {
 
     @Override
     public long commitMove(long userId, String path, String data) {
-        Path oldPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(data);
-        Path newPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(path);
+        Path newPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(data);
+        Path oldPath = this.fileRootLocation.resolve(String.valueOf(userId)).resolve(path);
         try {
             Files.move(oldPath, newPath,
                     StandardCopyOption.REPLACE_EXISTING);
