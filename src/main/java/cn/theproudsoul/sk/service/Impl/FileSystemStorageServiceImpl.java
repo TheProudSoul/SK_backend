@@ -113,7 +113,7 @@ public class FileSystemStorageServiceImpl implements FileStorageService {
                     });
                 }
             }
-            return file.getFileName().toString();
+                return file.toFile().getName();
         } catch (IOException e) {
             throw new StorageException("Could not read file: " + filename, e);
         }

@@ -34,13 +34,13 @@ public class ApiServiceImpl implements ApiService {
         if (files == null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            String fileTitle = file.getName();
-            node.setTitle(fileTitle.substring(0, fileTitle.length() - 3));
+            node.setTitle(file.getName());
             node.setPathName(file.getPath().substring(path.toString().length() + 1));
             node.setDirPath(node.getPathName().substring(0, node.getPathName().length() - node.getTitle().length()));
 
             if (file.isFile()) {
                 node.setLeaf(true);
+                node.setTitle(node.getTitle().substring(0,node.getTitle().length()-3));
             } else {
                 node.setChildren(listFileSystemHelper(file, path));
             }
@@ -67,12 +67,12 @@ public class ApiServiceImpl implements ApiService {
         if (files == null) return result;
         for (File file : files) {
             FileSystemNode node = new FileSystemNode();
-            String fileTitle = file.getName();
-            node.setTitle(fileTitle.substring(0, fileTitle.length() - 3));
+            node.setTitle(file.getName());
             node.setPathName(file.getPath().substring(path.toString().length() + 1));
             node.setDirPath(node.getPathName().substring(0, node.getPathName().length() - node.getTitle().length()));
             if (file.isFile()) {
                 node.setLeaf(true);
+                node.setTitle(node.getTitle().substring(0,node.getTitle().length()-3));
             } else {
                 node.setChildren(listFileSystemHelper(file, path));
             }
